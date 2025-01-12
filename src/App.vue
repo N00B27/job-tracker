@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { ref, onMounted, defineAsyncComponent } from 'vue';
+import { ref, onMounted } from 'vue';
 import type { JobApplication } from './types';
 import JobList from './components/JobList.vue';
 import JobForm from './components/JobForm.vue';
+import DeleteConfirmationModal from './components/DeleteConfirmationModal.vue';
+import InterviewModal from './components/InterviewModal.vue';
+import OfferModal from './components/OfferModal.vue';
 import { getAllJobs, addJob, updateJob, deleteJob, getResume } from './lib/db';
-
-// Lazy load modals
-const DeleteConfirmationModal = defineAsyncComponent(() => import('./components/DeleteConfirmationModal.vue'));
-const InterviewModal = defineAsyncComponent(() => import('./components/InterviewModal.vue'));
-const OfferModal = defineAsyncComponent(() => import('./components/OfferModal.vue'));
 
 const jobs = ref<JobApplication[]>([]);
 const error = ref('');
 const isLoading = ref(true);
+const showDeleteModal = ref(false);
+const showInterviewModal = ref(false);
+const showOfferModal = ref(false);
+const selectedJobId = ref<string | null>(null);
+const jobToDelete = ref<{ id: string; company: string } | null>(null);
 
 const loadJobs = async () => {
   try {
@@ -35,14 +38,34 @@ const handleAddJob = async (job: JobApplication) => {
   }
 };
 
-const handleDeleteJob = async (jobId: string) => {
+const handleDeleteConfirm = async () => {
+  if (!jobToDelete.value) return;
+  
   try {
-    await deleteJob(jobId);
+    await deleteJob(jobToDelete.value.id);
     await loadJobs();
   } catch (err) {
     console.error('Error deleting job:', err);
     error.value = 'Failed to delete job application';
+  } finally {
+    handleModalClose();
   }
+};
+
+const handleDeleteRequest = (jobId: string) => {
+  const job = jobs.value.find(j => j.id === jobId);
+  if (!job) return;
+  
+  jobToDelete.value = { id: jobId, company: job.company };
+  showDeleteModal.value = true;
+};
+
+const handleModalClose = () => {
+  showDeleteModal.value = false;
+  showInterviewModal.value = false;
+  showOfferModal.value = false;
+  selectedJobId.value = null;
+  jobToDelete.value = null;
 };
 
 const handleStatusChange = async (
@@ -57,6 +80,18 @@ const handleStatusChange = async (
   try {
     const job = jobs.value.find(j => j.id === jobId);
     if (!job) return;
+
+    if (status === 'interviewing' && !additionalData?.interviewDate) {
+      selectedJobId.value = jobId;
+      showInterviewModal.value = true;
+      return;
+    }
+
+    if (status === 'offer' && !additionalData?.offerDetails) {
+      selectedJobId.value = jobId;
+      showOfferModal.value = true;
+      return;
+    }
 
     const updatedJob = {
       ...job,
@@ -127,11 +162,47 @@ onMounted(() => {
         <JobList
           v-else
           :jobs="jobs"
-          @delete-job="handleDeleteJob"
+          @delete-job="handleDeleteRequest"
           @status-change="handleStatusChange"
           @download-resume="handleDownloadResume"
         />
       </div>
+
+      <DeleteConfirmationModal
+        :show="showDeleteModal"
+        :job-company="jobToDelete?.company || ''"
+        @confirm="handleDeleteConfirm"
+        @cancel="handleModalClose"
+      />
+
+      <InterviewModal
+        v-if="selectedJobId"
+        :show="showInterviewModal"
+        :job-id="selectedJobId"
+        :min-date="jobs.find(j => j.id === selectedJobId)?.dateApplied || ''"
+        :initial-date="jobs.find(j => j.id === selectedJobId)?.interviewDate"
+        :is-editing="!!jobs.find(j => j.id === selectedJobId)?.interviewDate"
+        @close="handleModalClose"
+        @save="(jobId, date) => {
+          handleStatusChange(jobId, 'interviewing', { interviewDate: date });
+          handleModalClose();
+        }"
+      />
+
+      <OfferModal
+        v-if="selectedJobId"
+        :show="showOfferModal"
+        :job-id="selectedJobId"
+        :min-date="jobs.find(j => j.id === selectedJobId)?.dateApplied || ''"
+        :initial-details="jobs.find(j => j.id === selectedJobId)?.offerDetails"
+        :initial-date="jobs.find(j => j.id === selectedJobId)?.offerDate"
+        :is-editing="!!jobs.find(j => j.id === selectedJobId)?.offerDetails"
+        @close="handleModalClose"
+        @save="(jobId, details, date) => {
+          handleStatusChange(jobId, 'offer', { offerDetails: details, offerDate: date });
+          handleModalClose();
+        }"
+      />
     </div>
   </div>
 </template>

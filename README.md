@@ -1,20 +1,5 @@
-# Job Application Tracker
+# Vue 3 + TypeScript + Vite
 
-This is an experimental web app built using Bolt and ChatGPT. The goal is not only to experiment with new technologies but also to create something useful. This README will be updated with more details as the project evolves.
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-👉 You can access the tool here: [Job Application Tracker](https://job-application-tracker-exp.netlify.app/) 👈
-
-Features
-<br>• Track and manage your job applications with ease.
-<br>• All data is stored locally in your browser for privacy and convenience.
-
-Best User Experience
-<br>• For the best experience, use Google Chrome.
-<br>• Note: All information is saved in your browser’s local storage.
-
-Data Persistence, While the data is stored locally, it may be lost under the following conditions:
-<br>• If you explicitly clear your browser data and select “IndexedDB” or “Site Data.”
-<br>• When using private/incognito mode.
-<br>• If your browser is configured to automatically clear site data on exit.
-
- 
+Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
