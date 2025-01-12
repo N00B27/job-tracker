@@ -1,5 +1,5 @@
 # Job Application Tracker
-This a simple job application tracker web app is my exploration and experimenting with AI tools like Bolt and ChatGPT. But I am not just to experiment with new technologies but also to create something useful (hopefuly). This README will be updated with more details as the project evolves.
+This simple job application tracker web app is part of my exploration and experimentation with AI tools like Bolt and ChatGPT. While the focus is on experimenting with new technologies, the goal is also to create something genuinely useful (hopefully!). This README will be updated with more details as the project evolves.
 
 ⭐ You can access the tool here: [Job Application Tracker](https://job-application-tracker-v2.netlify.app/) ⭐
 
