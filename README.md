@@ -2,7 +2,7 @@
 
 This is an experimental web app built using Bolt and ChatGPT. The goal is not only to experiment with new technologies but also to create something genuinely useful. This README will be updated with more details as the project evolves.
 
-You can access the tool here: [Job Application Tracker](https://gregarious-alfajores-edd342.netlify.app/)
+You can access the tool here: [Job Application Tracker](https://job-application-tracker-exp.netlify.app/)
 
 Features
 <br>• Track and manage your job applications with ease.
