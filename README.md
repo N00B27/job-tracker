@@ -1,4 +1,7 @@
 # Job Application Tracker
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1e947e72-9796-4584-ba6b-0a8f02385145/deploy-status)](https://app.netlify.com/sites/job-application-tracker-v2/deploys)
+
 This simple job application tracker web app is part of my exploration and experimentation with AI tools like Bolt and ChatGPT. While the focus is on experimenting with new technologies, the goal is also to create something genuinely useful (hopefully!). This README will be updated with more details as the project evolves.
 
 ⭐ You can access the tool here: [Job Application Tracker](https://job-application-tracker-v2.netlify.app/) ⭐
