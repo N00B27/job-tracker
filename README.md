@@ -8,6 +8,11 @@ This simple job application tracker web app is part of my exploration and experi
 
 ---
 
+Update 10 Feb 2025
+<br>• Search functionality
+<br>• Edit job title
+<br>• Minor UI tweak
+
 Features
 <br>• Track and manage your job applications with ease.
 <br>• All data is stored locally in your browser for privacy and convenience.
